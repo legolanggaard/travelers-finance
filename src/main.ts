@@ -8,13 +8,13 @@ async function bootstrap() {
   await basicApiApp.listen(port);
   const mqUser = process.env.CONSUMER_USERNAME;
   const mqPw = process.env.CONSUMER_PASSWORD;
+  const mqUrl = process.env.QUEUE_AWS_URL;
+  const mqPort = process.env.QUEUE_AWS_PORT;
   // sd
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.RMQ,
     options: {
-      urls: [
-        `amqps://${mqUser}:${mqPw}@b-902ad621-f4ca-4d73-88e5-42bb5540f386.mq.eu-west-1.amazonaws.com:5671`,
-      ],
+      urls: [`amqps://${mqUser}:${mqPw}@${mqUrl}:${mqPort}`],
       queue: 'finance',
       // false = manual acknowledgement; true = automatic acknowledgment
       noAck: false,
